@@ -1,0 +1,138 @@
+@use '../util/variables' as *;
+
+
+
+
+.form_container {
+  background-color: white;
+  padding: $s-8;
+  border-radius: $s-3;
+  flex: 1;
+  max-width: $container-with;
+}
+
+.form_container h1 {
+  font-size: $heading;
+  text-align: center;
+  font-weight: 600;
+  color: $heading-clr;
+  margin-bottom: $s-8;
+}
+.form_container form ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $gap-signUp;
+  list-style-type: none;
+  margin-bottom: $gap-signUp;
+  & > li{
+    position: relative;
+  }
+}
+
+.form_container form input {
+  padding-inline: $s-4;
+  width: 100%;
+  padding-block: $s-4;
+  font-size: $base;
+  border-radius: $btn-border-radius;
+  border-color: $btn-input-border-color;
+  border-style: solid;
+  border-width: $btn-border-width;
+  outline: none;
+  &:focus{
+    outline: 2px solid $btn-primary-color;
+    border-color: transparent;
+  }
+  
+}
+
+.form_container form ul li.failedValidation{
+  & > input{
+    outline: 2px solid $clr-error;
+    border-color: transparent;
+  }
+  & .error_message{
+    display: block;
+  }
+}
+
+
+// .form_container button{
+//   margin-bottom: 1rem;
+// }
+
+.form_container form input::placeholder {
+  font-weight: 500;
+}
+
+.eye_icon{
+  position: absolute;
+  right: 1.5rem;
+  bottom: 50%;
+  transform: translateY(50%);
+  font-size: $s-4;
+  cursor: pointer;
+  color: #a1a1a1;
+}
+
+.form_container p {
+  font-size: $base;
+  text-align: center;
+  margin-top: $s-3;
+}
+.form_container .form_link{
+  color: $clr-link;
+  text-decoration: none;
+  &:hover{
+    text-decoration: underline;
+  }
+}
+
+.form_container .line {
+  height: 2px;
+  background-color: $black-200;
+  margin-block: $s-10;
+  position: relative;
+  &:before {
+    content: "Or";
+    font-size: $lg;
+    color: $black-300;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: $s-4;
+  }
+}
+.form_container .facebook-Google_Container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+}
+
+.facebook-Google_Container a {
+  display: flex;
+  text-align: center;
+  text-decoration: none;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn--facebook i {
+  color: $btn-primary-color;
+  background-color: white;
+  width: $s-7;
+  height: $s-7;
+  font-size: $base;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin-right: auto;
+}
+.btn--google img,
+.btn--facebook i {
+  position: absolute;
+  left: $s-5;
+}

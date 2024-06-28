@@ -1,0 +1,23 @@
+@use '../util/mixins' as *;
+@use '../util/variables' as *;
+
+
+.btn {
+  &--primary{
+    @include button($btn-primary-color,$bnt-primaryText-clr);
+    width: 100%;
+  }
+  &--facebook{
+    @include button($btn-secondary-color,$btn-secondaryText-clr);
+  }
+  &--google{
+    @include button(white,$heading-clr);
+    border: 1px solid $btn-input-border-color;
+    color: $heading-clr;
+    & span{
+      opacity: 0.6;
+    }
+  }
+  
+}
+

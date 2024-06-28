@@ -1,0 +1,30 @@
+@use '../util/variables' as *;
+
+
+
+
+
+
+
+.login_page_body {
+  font-family: $Font-stack;
+  background-color: $primary-bg;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  height: 100svh;
+}
+
+.form_container form ul{
+  margin-bottom: 1.8rem;
+}
+
+.login_forgetPassword{
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  font-size: $base;
+  margin-bottom: calc($gap-signUp - .5rem);
+}

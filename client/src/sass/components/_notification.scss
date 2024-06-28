@@ -1,0 +1,25 @@
+@use '../util/mixins' as *;
+@use '../util/variables' as *;
+
+
+.notification_center{
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translate(-50%);
+  z-index: 10;
+  &:has(> div){
+    top: 0;
+  }
+}
+
+.notification{
+  &--success{
+    @include notification(green);
+  }
+  
+  &--error{
+    @include notification($clr-error);
+  }
+}
+

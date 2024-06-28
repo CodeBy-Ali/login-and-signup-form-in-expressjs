@@ -1,0 +1,41 @@
+@use "variables" as *;
+@use 'animations' as *;
+
+@mixin button($bg, $clr) {
+  background-color: $bg;
+  color: $bnt-primaryText-clr;
+  border-radius: $btn-border-radius;
+  padding: $btn-padding;
+  font-size: $lg;
+  font-weight: 500;
+  font-family: $Font-stack;
+  letter-spacing: $btn-letterSpacing;
+  border: none;
+  position: relative;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.09);
+  &:hover {
+    opacity: 0.9;
+  }
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+@mixin notification($clr-bg){
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: $clr-bg;
+  color: white;
+  font-size: $s-4;
+  padding-block: $s-5;
+  padding-inline: $s-7;
+  border-radius: 1rem;
+  box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.19);
+  white-space: nowrap;
+  margin-block: 1rem;
+  animation: dropIn .3s ease forwards;
+}
+
+
+

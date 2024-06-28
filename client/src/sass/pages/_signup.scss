@@ -1,0 +1,12 @@
+@use '../util/variables' as *;
+
+.signup_page_body {
+  font-family: $Font-stack;
+  background-color: $primary-bg;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  height: 100svh;
+}

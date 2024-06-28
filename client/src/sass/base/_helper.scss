@@ -1,0 +1,14 @@
+@use '../util/variables' as *;
+
+.error_message{
+  color: $clr-error;
+  font-size: 13px;
+  position: absolute;
+  bottom: -2.4rem;
+  left: 0;
+  display: none;
+  & span svg{
+    width: 1.2rem;
+    fill: $clr-error;
+  }
+}

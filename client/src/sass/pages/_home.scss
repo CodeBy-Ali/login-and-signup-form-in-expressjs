@@ -1,0 +1,24 @@
+@use '../util/variables' as *;
+@use '../util/mixins' as *;
+
+.home_page_body{
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+
+.home_main_container{
+  font-size: $s-10 ;
+  & a{
+    display: inline-block;
+    @include button(black,white);
+    width: 11rem ;
+    text-align: center;
+    text-decoration: none;
+
+    &:active{
+      transform: scale(.95);
+    }
+  }
+}
