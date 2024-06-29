@@ -1,7 +1,7 @@
 import {
   hideFailedValidation,
   displayFailedValidation,
-  showServerResponse,
+  showErrorNotification,
   togglePasswordVisibility
 } from "../utils/domManipulation.mjs";
 
@@ -20,11 +20,10 @@ const submitForm = async (userData) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData)
     })
-    console.log(response)
     if (!response.ok) {
       const data = await response.json();
       console.log(data)
-      showServerResponse(data.message, response.ok);
+      showErrorNotification(data.error);
     }
 
     if (response.redirected) {

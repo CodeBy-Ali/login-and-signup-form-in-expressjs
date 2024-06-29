@@ -1,28 +1,27 @@
-import {
-  hideFailedValidation,
-  displayFailedValidation,
-  showServerResponse,
-  togglePasswordVisibility
-} from "../utils/domManipulation.mjs";
+import { hideFailedValidation, displayFailedValidation, showErrorNotification, togglePasswordVisibility } from "../utils/domManipulation.mjs";
 
-import { isEmailValid,isPasswordValid } from "../utils/validate.mjs";
+import { isEmailValid, isPasswordValid } from "../utils/validate.mjs";
 
 const submitForm = async (userData) => {
   try {
-    const response = await fetch('/register', {
+    const response = await fetch("/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userData),
-    })
-    const data = await response.json();
-    showServerResponse(data.message, response.ok);
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      showErrorNotification(data.error);
+    }
+
+    if (response.redirected) {
+      window.location.href = response.url;
+    }
   } catch (error) {
-    console.log(error)    
+    console.log(error);
   }
 };
-
-
-
 
 const validateForm = (e) => {
   e.preventDefault();
@@ -61,10 +60,10 @@ const validateForm = (e) => {
 const App = () => {
   const signUpBtn = document.querySelector("[ data-signUp]");
   const inputFields = document.querySelectorAll("form * input");
-  const eyeIcon = document.querySelector('[data-eyeIcon]');
+  const eyeIcon = document.querySelector("[data-eyeIcon]");
 
-  eyeIcon.addEventListener('click', togglePasswordVisibility);
-  inputFields.forEach((field) => field.addEventListener('focus', (e) => hideFailedValidation(e.target.parentElement)));
+  eyeIcon.addEventListener("click", togglePasswordVisibility);
+  inputFields.forEach((field) => field.addEventListener("focus", (e) => hideFailedValidation(e.target.parentElement)));
   signUpBtn.addEventListener("click", validateForm);
 };
 

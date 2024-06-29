@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <title>SignUp/LogIn</title>
+  <script type="module" crossorigin src="/assets/signup-BEYnJ815.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/main-DHptuWbR.js">
+  <link rel="modulepreload" crossorigin href="/assets/validate-CPr8sj_R.js">
+  <link rel="stylesheet" crossorigin href="/assets/main-6SnOhi-r.css">
+  <link rel="stylesheet" crossorigin href="/assets/signup-IMRxTXkq.css">
+</head>
+<body class="signup_page_body">
+  <div class="notification_center" data-notificationCenter></div>
+    
+  <section class="form_container">
+    <h1>Signup</h1>
+    <form action="" data-signupForm>
+      <ul>
+        <li>
+          <label for="email"></label>
+          <input type="email" placeholder="Email" name="email" id="email" data-email required>
+          <div class="error_message">
+            <span>
+              <svg data-encore-id="icon" role="img" aria-label="Error:" aria-hidden="true" class="errorIcon" viewBox="0 0 16 16">
+                <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path><path d="M7.25 9V4h1.5v5h-1.5zm0 3.026v-1.5h1.5v1.5h-1.5z"></path>
+              </svg>
+            </span>
+            <span>Use a valid email address</span>
+          </div>
+        </li>
+        <li>
+          <label for="password"></label>
+          <input type="password" placeholder="Create Password" id="password" name="password" required  title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" data-createPassword data-password>
+
+          <div class="error_message">
+            <span>
+              <svg data-encore-id="icon" role="img" aria-label="Error:" aria-hidden="true" class="errorIcon" viewBox="0 0 16 16">
+                <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path><path d="M7.25 9V4h1.5v5h-1.5zm0 3.026v-1.5h1.5v1.5h-1.5z"></path>
+              </svg>
+            </span>
+            <span>Password is weak</span>
+          </div>
+        </li>
+        </li>
+        <li>
+          <label for="confirmpassword"></label>
+          <input type="password" placeholder="Confirm Password" id="confirmpassword" required title="Re-enter your password to confirm." data-confirmPassword data-password>
+          <i class="fas fa-eye-slash eye_icon" data-eyeIcon></i>
+          <div class="error_message">
+            <span>
+              <svg data-encore-id="icon" role="img" aria-label="Error:" aria-hidden="true" class="errorIcon" viewBox="0 0 16 16">
+                <path d="M8 1.5a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13zM0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8z"></path><path d="M7.25 9V4h1.5v5h-1.5zm0 3.026v-1.5h1.5v1.5h-1.5z"></path>
+              </svg>
+            </span>
+            <span>Passwords do not Match</span>
+          </div>
+        </li>
+        </li>
+      </ul>
+      <button class="btn--primary" data-signUp>Signup</button>
+    </form>
+    <p >Already have an account?<a href="/login" class="form_link"> Login</a></p>
+    <div class="line"></div>
+    <div class="facebook-Google_Container">
+      <a href="" class="btn--facebook">
+        <i class="fa-brands fa-facebook-f"></i>
+        <span>Login With Facebook</span>
+      </a>
+      <a href="" class="btn--google">
+        <img width="28" height="28" src="https://img.icons8.com/color/48/google-logo.png" alt="google-logo"/>
+        <span>Login with Google</span>
+      </a>
+    </div>
+  </section>
+</body>
+</html>

@@ -11,7 +11,8 @@ const config = {
   HOST: process.env.HOST || `127.0.0.1`,
   dir: {
     root: __dirname,
-    static: path.resolve(__dirname, '..', '../client/dist') + sep
+    static: path.resolve(__dirname, '..', '../client/public') + sep,
+    views: path.resolve(__dirname, '../views') + sep,
   },
 
   database: process.env.MONGODB_URI || "mongodb://localhost:27017/test",

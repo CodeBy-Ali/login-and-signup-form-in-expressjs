@@ -1,12 +1,6 @@
 @use '../util/variables' as *;
 @use '../util/mixins' as *;
 
-.home_page_body{
-  display: grid;
-  place-items: center;
-  height: 100vh;
-}
-
 
 .home_main_container{
   font-size: $s-10 ;

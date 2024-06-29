@@ -1,0 +1,8 @@
+<%- include('partials/_header.ejs') %>
+<main>
+  <h1>Hy <%= user %> 👋</h1>
+  <form action="/logout" method="post">
+    <button type="submit">SignOut</button>
+  </form>
+</main>
+<%- include('partials/_footer.ejs') %>

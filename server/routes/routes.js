@@ -3,6 +3,7 @@ import { Router } from "express";
 import { sendHomePage } from "../controllers/homeController.js";
 import validateAuthInput from "../middlewares/validateAuthInput.js";
 import { renderDashboardView } from "../controllers/dashboardController.js";
+import { isAuthenticated } from "../middlewares/authenticate.js";
 import {
   sendLoginPage,
   sendSignUpPage,
@@ -25,6 +26,6 @@ router.get("/login", sendLoginPage);
 router.post("/login", validateAuthInput, authenticateUser,);
 
 // dashboard
-router.get("/dashboard",renderDashboardView)
+router.get("/dashboard", isAuthenticated, renderDashboardView);
 
 export default router;

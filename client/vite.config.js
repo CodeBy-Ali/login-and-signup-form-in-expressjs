@@ -9,8 +9,8 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         signup: resolve(__dirname, 'src/pages/signup.html'),
         login: resolve(__dirname, 'src/pages/login.html'),
-        dashboard: resolve(__dirname, 'src/pages/dashboard.html')
       },
     },
+    outDir: 'public'
   },
 })

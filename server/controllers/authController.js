@@ -11,12 +11,12 @@ export const authenticateUser = async (req, res,next) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    res.status(404).json({ message: "We couldn't find an account with that email address" });
+    res.status(404).json({ error: "We couldn't find an account with that email address" });
     return
   }
 
   if (user.password !== password) {
-    res.status(400).json({ message: "Incorrect password" });
+    res.status(400).json({ error: "Incorrect password" });
     return;
   }
   
@@ -36,27 +36,21 @@ export const registerNewUser = async (req, res) => {
   try {
     const duplicateUser = await User.findOne({ email: email });
     if (duplicateUser) {
-      res.status(400).json({ message: `Email already registered` });
+      res.status(400).json({ error: `Email already registered` });
       return;
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" });
   }
 
   // create new User
   try {
     const newUser = await user.save();
-    console.log(newUser);
-    res.status(201).json({
-      message: `User created successfully`,
-      user: {
-        id: newUser._id,
-        email: newUser.email,      }
-    })
+    res.redirect('login')
   } catch (err) { 
     console.log(err)
-    res.status(500).json({ message: `Internal Server Error` });
+    res.status(500).json({ error: `Internal Server Error` });
   }
 }
 
