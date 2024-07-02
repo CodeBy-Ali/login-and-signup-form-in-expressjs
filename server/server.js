@@ -4,7 +4,11 @@ import router from './routes/routes.js';
 import config from './config/config.js';
 import compression from 'compression';
 import session from 'express-session';
-const { PORT, HOST, database, dir } = config;
+import { v4 as uuidv4 } from 'uuid';
+import MongoStore from 'connect-mongo';
+import errorHandler from './middlewares/errorHandler.js';
+const { PORT, HOST, database, dir, sessionSecret } = config;
+
 
 // connect to database
 mongoose.connect(database)
@@ -19,9 +23,18 @@ const app = express();
 
 // creating sessions
 app.use(session({
-  secret: 'keyboard cat',
+  name: "sessionId",
+  secret: sessionSecret,
+  store: MongoStore.create({
+    mongoUrl: database,
+  }),
   resave: false,
   saveUninitialized: true,
+  genid: () => uuidv4(),
+  cookie: {
+    maxAge: 2 * 60 * 1000,
+    httpOnly: false,
+  }
 }))
 
 
@@ -38,11 +51,12 @@ app.use(compression());
 // parse req body
 app.use(express.json())
 
-// server static assets
-app.use(express.static(dir.static));
 
 // handles routes
 app.use('/', router);
+
+// server static assets
+app.use(express.static(dir.static));
 
 // respond to unhandled routes
 app.use('*', (req, res, next) => {
@@ -54,6 +68,8 @@ app.use('*', (req, res, next) => {
     res.status(404).send('404 not Found');
   }
 })
+// handler error
+app.use(errorHandler);
 
 app.listen(PORT,HOST, () => {
   console.log(`Server listening at http://${HOST}:${PORT}`);

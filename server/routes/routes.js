@@ -3,7 +3,7 @@ import { Router } from "express";
 import { sendHomePage } from "../controllers/homeController.js";
 import validateAuthInput from "../middlewares/validateAuthInput.js";
 import { renderDashboardView } from "../controllers/dashboardController.js";
-import { isAuthenticated } from "../middlewares/authenticate.js";
+import { isAuthenticated, redirectIfAuthorized } from "../middlewares/authenticate.js";
 import {
   sendLoginPage,
   sendSignUpPage,
@@ -15,7 +15,7 @@ import {
 const router = Router();
 
 // home
-router.get("/", sendHomePage);
+router.get("/", redirectIfAuthorized,sendHomePage);
 
 // register
 router.get("/register", sendSignUpPage);
@@ -23,7 +23,7 @@ router.post("/register", validateAuthInput, registerNewUser);
 
 // login
 router.get("/login", sendLoginPage);
-router.post("/login", validateAuthInput, authenticateUser,);
+router.post("/login", validateAuthInput, authenticateUser);
 
 // dashboard
 router.get("/dashboard", isAuthenticated, renderDashboardView);

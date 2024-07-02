@@ -14,8 +14,12 @@ const config = {
     static: path.resolve(__dirname, '..', '../client/public') + sep,
     views: path.resolve(__dirname, '../views') + sep,
   },
-
   database: process.env.MONGODB_URI || "mongodb://localhost:27017/test",
+  bcrypt: {
+    saltRounds: 10,
+  },
+  sessionSecret: process.env.SESSION_SECRET
+  
 }
 
 export default config;
