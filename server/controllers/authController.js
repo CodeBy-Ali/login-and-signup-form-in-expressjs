@@ -3,9 +3,10 @@ import path from "path";
 import config from "../config/config.js";
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
-import session from "express-session";
 
-//
+
+
+
 export const authenticateUser = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -18,7 +19,6 @@ export const authenticateUser = async (req, res, next) => {
     }
 
     // match the user password
-    console.log(user.passwordHash,password)
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       return res.status(400).json({ error: "Incorrect password" });
@@ -31,8 +31,6 @@ export const authenticateUser = async (req, res, next) => {
       // save the session
       req.session.save((err) => {
         if (err) next(err);
-        console.log(req.session.user)
-        // redirect to dashboard page
         res.redirect('/dashboard')
     
       });
@@ -74,6 +72,18 @@ export const registerNewUser = async (req, res, next) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+
+
+// destroys the session and clears cookie and redirect to home page
+export const logoutUser = (req, res,next) => {
+  req.session.destroy((err) => {
+    if (err) next(err);
+    res.clearCookie(config.cookie.name)
+    res.redirect('/')
+  })
+}
+
 
 export const sendSignUpPage = (req, res) => {
   res.sendFile(path.join(config.dir.static, "src/pages/signup.html"));

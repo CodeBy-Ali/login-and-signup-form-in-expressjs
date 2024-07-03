@@ -9,10 +9,13 @@ import {
   sendSignUpPage,
   authenticateUser,
   registerNewUser,
+  logoutUser,
 } from "../controllers/authController.js";
 
 
 const router = Router();
+
+
 
 // home
 router.get("/", redirectIfAuthorized,sendHomePage);
@@ -28,4 +31,6 @@ router.post("/login", validateAuthInput, authenticateUser);
 // dashboard
 router.get("/dashboard", isAuthenticated, renderDashboardView);
 
+// logout
+router.post("/logout",logoutUser);
 export default router;

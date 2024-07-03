@@ -7,7 +7,7 @@ import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
 import MongoStore from 'connect-mongo';
 import errorHandler from './middlewares/errorHandler.js';
-const { PORT, HOST, database, dir, sessionSecret } = config;
+const { PORT, HOST, database, dir, sessionSecret,cookie } = config;
 
 
 // connect to database
@@ -23,16 +23,16 @@ const app = express();
 
 // creating sessions
 app.use(session({
-  name: "sessionId",
+  name: cookie.name,
   secret: sessionSecret,
   store: MongoStore.create({
     mongoUrl: database,
   }),
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   genid: () => uuidv4(),
   cookie: {
-    maxAge: 2 * 60 * 1000,
+    maxAge: cookie.maxAge,
     httpOnly: false,
   }
 }))
@@ -51,6 +51,14 @@ app.use(compression());
 // parse req body
 app.use(express.json())
 
+// // logRequest
+// app.use((req, res, next) => {
+//   console.log("\n----------------------------------------------\n")
+//   console.log(req.session);
+//   console.log(`--> SessionId: ${req.sessionID}`);
+//   console.log("\n----------------------------------------------")
+//   next();
+// })
 
 // handles routes
 app.use('/', router);

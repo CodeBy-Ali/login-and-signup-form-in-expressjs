@@ -18,7 +18,11 @@ const config = {
   bcrypt: {
     saltRounds: 10,
   },
-  sessionSecret: process.env.SESSION_SECRET
+  sessionSecret: process.env.SESSION_SECRET,
+  cookie: {
+    name: "sessionId",
+    maxAge: 5 * 60 * 1000, // 5 minutes
+  }
   
 }
 
