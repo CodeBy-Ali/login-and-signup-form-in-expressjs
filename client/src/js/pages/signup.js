@@ -1,6 +1,16 @@
 import { hideFailedValidation, displayFailedValidation, showErrorNotification, togglePasswordVisibility } from "../utils/domManipulation.mjs";
-
+import * as queryString from 'querystring';
 import { isEmailValid, isPasswordValid } from "../utils/validate.mjs";
+
+
+
+
+
+
+
+
+
+
 
 const submitForm = async (userData) => {
   try {
@@ -61,6 +71,7 @@ const App = () => {
   const signUpBtn = document.querySelector("[ data-signUp]");
   const inputFields = document.querySelectorAll("form * input");
   const eyeIcon = document.querySelector("[data-eyeIcon]");
+  const googleLoginAnchor = document.querySelector('a[data-google-login-link]');
 
   eyeIcon.addEventListener("click", togglePasswordVisibility);
   inputFields.forEach((field) => field.addEventListener("focus", (e) => hideFailedValidation(e.target.parentElement)));
@@ -68,3 +79,6 @@ const App = () => {
 };
 
 document.addEventListener("DOMContentLoaded", App);
+
+
+console.log(process.env.CLIENT_ID)
