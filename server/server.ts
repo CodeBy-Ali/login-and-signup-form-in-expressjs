@@ -1,7 +1,7 @@
 import express, { json } from 'express';
 import mongoose from 'mongoose'
-import router from './routes/routes.js';
-import config from './config/config.js';
+import router from './routes/routes.ts';
+import config from './config/config.ts';
 import compression from 'compression';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,6 +22,14 @@ mongoose.connect(database)
 const app = express();
 
 // creating sessions
+
+declare module 'express-session' {
+  interface SessionData{
+    user: {
+      _id: mongoose.Types.ObjectId;
+    }
+  }
+}
 app.use(session({
   name: cookie.name,
   secret: sessionSecret,
@@ -51,14 +59,15 @@ app.use(compression());
 // parse req body
 app.use(express.json())
 
-// // logRequest
-// app.use((req, res, next) => {
-//   console.log("\n----------------------------------------------\n")
-//   console.log(req.session);
-//   console.log(`--> SessionId: ${req.sessionID}`);
-//   console.log("\n----------------------------------------------")
-//   next();
-// })
+// logRequest
+app.use((req, res, next) => {
+  // req.session.reload((err) => next(err));
+  console.log("\n----------------------------------------------\n")
+  console.log(req.session);
+  console.log(`--> SessionId: ${req.sessionID}`);
+  console.log("\n----------------------------------------------")
+  next();
+})
 
 // handles routes
 app.use('/', router);
@@ -70,7 +79,7 @@ app.use(express.static(dir.static));
 app.use('*', (req, res, next) => {
   if (req.accepts('html')) {
     res.status(404).render('404',{title: `404 Not Found`});
-  } else if (res.accepts('json')) {
+  } else if (req.accepts('json')) {
     res.status(404).json({error: `${req.originalUrl} not found`})
   } else {
     res.status(404).send('404 not Found');
