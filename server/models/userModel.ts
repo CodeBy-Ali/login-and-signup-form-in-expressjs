@@ -1,25 +1,39 @@
 import mongoose, {Schema} from "mongoose";
 
 
-interface IUser{
+export interface IUser{
   email: string,
-  passwordHash: string,
+  passwordHash?: string,
   profilePicture?: string,
+  authMethod: string,
+  googleId?: string,
+  name?:string,
 }
 
 const userSchema = new Schema<IUser>({
   email: {
-    type: String, 
+    type: String,
     unique: true,
     required: true,
   },
   passwordHash: {
     type: String,
+    trim: true,
+  },
+  googleId: {
+    type: String,
+  },
+  authMethod: {
+    type: String,
     required: true,
+    enum: ['local', 'google']
   },
   profilePicture: {
     type: String,
-    unique: true,
+    trim: true,
+  },
+  name: {
+    type: String,
     trim: true,
   }
 })

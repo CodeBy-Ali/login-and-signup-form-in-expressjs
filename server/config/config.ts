@@ -18,6 +18,10 @@ const config = {
     id: process.env.CLIENT_ID,
     secret: process.env.CLIENT_SECRET,
     redirectUri: process.env.REDIRECT_URI,
+    scopes:  [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+    ],
   },
   database: process.env.MONGODB_URI || "mongodb://localhost:27017/test",
   bcrypt: {

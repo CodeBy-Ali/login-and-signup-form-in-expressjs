@@ -1,13 +1,28 @@
 import express, { json } from 'express';
 import mongoose from 'mongoose'
+import requestLogger from './middlewares/requestLogger.ts';
 import router from './routes/routes.ts';
 import config from './config/config.ts';
 import compression from 'compression';
 import session from 'express-session';
 import { v4 as uuidv4 } from 'uuid';
 import MongoStore from 'connect-mongo';
+import { google } from 'googleapis';
 import errorHandler from './middlewares/errorHandler.js';
 const { PORT, HOST, database, dir, sessionSecret,cookie } = config;
+
+
+
+
+
+
+// set up oauth client
+export const oauth2Client = new google.auth.OAuth2({
+  clientId: config.Client.id,
+  clientSecret:  config.Client.secret,
+  redirectUri: config.Client.redirectUri,
+});
+
 
 
 // connect to database
@@ -26,8 +41,10 @@ const app = express();
 declare module 'express-session' {
   interface SessionData{
     user: {
-      _id: mongoose.Types.ObjectId;
-    }
+      id: mongoose.Types.ObjectId;
+      isLoggedIn: boolean;
+    },
+    state: string,
   }
 }
 app.use(session({
@@ -59,21 +76,15 @@ app.use(compression());
 // parse req body
 app.use(express.json())
 
-// logRequest
-app.use((req, res, next) => {
-  // req.session.reload((err) => next(err));
-  console.log("\n----------------------------------------------\n")
-  console.log(req.session);
-  console.log(`--> SessionId: ${req.sessionID}`);
-  console.log("\n----------------------------------------------")
-  next();
-})
-
-// handles routes
-app.use('/', router);
 
 // server static assets
 app.use(express.static(dir.static));
+
+// logRequest
+app.use(requestLogger);
+
+// handles routes
+app.use('/', router);
 
 // respond to unhandled routes
 app.use('*', (req, res, next) => {

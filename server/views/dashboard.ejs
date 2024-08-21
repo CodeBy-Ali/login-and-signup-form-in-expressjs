@@ -1,6 +1,11 @@
 <%- include('partials/_header.ejs') %>
 <main>
   <h1>Hy <%= user %> 👋</h1>
+  <% if(picture){ %>
+    <span>
+      <img src="<%= picture %>" alt="profile picture" width="100" height="100">
+    </span>
+  <% } %>
   <form action="/logout" method="post">
     <button type="submit">SignOut</button>
   </form>

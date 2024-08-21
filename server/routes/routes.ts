@@ -11,6 +11,7 @@ import {
   registerNewUser,
   handleGoogleAuth,
   logoutUser,
+  handleGoogleAuthCallback
 } from "../controllers/authController.ts";
 
 
@@ -29,6 +30,9 @@ router.post("/register", validateAuthInput, registerNewUser);
 router.get('/auth/google',handleGoogleAuth)
 router.get("/login", sendLoginPage);
 router.post("/login", validateAuthInput, authenticateUser);
+
+
+router.get('/auth/google/callback', handleGoogleAuthCallback);
 
 // dashboard
 router.get("/dashboard", isAuthenticated, renderDashboardView);

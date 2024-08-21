@@ -1,11 +1,15 @@
 /** @type {import("express").RequestHandler} */
 import path from "path";
 import config from "../config/config.js";
-import User from "../models/userModel.ts";
+import User, { IUser } from "../models/userModel.ts";
 import bcrypt from "bcrypt";
 import { NextFunction, Request, Response } from "express";
-import {google } from 'googleapis';
 import crypto from 'crypto';
+import { oauth2Client } from "../server.ts";
+import { google } from "googleapis";
+import mongoose from "mongoose";
+import QueryString from "qs";
+
 
 export const authenticateUser = async (req:Request, res:Response, next:NextFunction) => {
   const { email, password } = req.body;
@@ -19,24 +23,19 @@ export const authenticateUser = async (req:Request, res:Response, next:NextFunct
     }
 
     // match the user password
+    if (!user.passwordHash || user.authMethod == 'google') {
+      return res.status(400).send({
+        error: 'Use google account to log in',
+      });
+    }
+
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       return res.status(400).json({ error: "Incorrect password" });
     }
-
     // create new user session
-    req.session.regenerate((err:any) => {
-      if (err) next(err);
-      if (req.session.user) {
-        req.session.user._id = user?._id;
-      }
-      // save the session
-      req.session.save((err:any) => {
-        if (err) next(err);
-        res.redirect('/dashboard')
-    
-      });
-    });
+    await createUserSession(user._id,req);
+    res.redirect('/dashboard')
 
   } catch (err) {
     console.log(err);
@@ -64,8 +63,9 @@ export const registerNewUser = async (req:Request, res:Response, next:NextFuncti
     const user = new User({
       email: email,
       passwordHash: passwordHash,
+      authMethod: 'local',
     });
-    await user.save();
+    await user.save(); 
 
     // redirect to login
     res.redirect("/login");
@@ -76,23 +76,46 @@ export const registerNewUser = async (req:Request, res:Response, next:NextFuncti
 };
 
 
+
 export const handleGoogleAuth = (req:Request, res:Response, next:NextFunction) => {
-  const CLIENT_ID = config.Client.id;
-  const CLIENT_SECRET = config.Client.secret;
-  const REDIRECT_URI = config.Client.redirectUri;
+  const state = crypto.randomBytes(32).toString('hex');
+  req.session.state = state;
 
-  const oauth2Client = new google.auth.OAuth2({
-    clientId: CLIENT_ID,
-    clientSecret: CLIENT_SECRET,
-    redirectUri: REDIRECT_URI,
-  });
+  const authorizedUrl = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: config.Client.scopes,
+    include_granted_scopes: true,
+    state: state,
+  })
+  res.redirect(authorizedUrl);
+}
 
-  const scopes = [
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile',
-  ]
-  
-  // res.redirect('/dashboard')
+
+export const handleGoogleAuthCallback = async (req: Request, res: Response, next: NextFunction) => {
+  const { error, code } = validateOAuth2Query(req.query as oauth2CallbackQuery, req.session.state);
+  if (!code) {
+    console.error(error);
+    return res.redirect('/login')
+  }
+
+  try {
+    const { tokens  } = await oauth2Client.getToken(code);
+    oauth2Client.setCredentials(tokens);
+    const auth2 = google.oauth2({
+      version: 'v2',
+      auth: oauth2Client,
+    })
+    const {data} = await auth2.userinfo.get();
+    const userData = extractUserData(data as UserData, 'google');
+    const user = await User.findOne({ email: data.email }) || new User(userData);
+    await user.save();
+    
+    // create user session
+    await createUserSession(user._id,req)
+    res.redirect('/dashboard');
+  } catch (error) {
+    next(error)
+  }
 }
 
 // destroys the session and clears cookie and redirect to home page
@@ -102,7 +125,7 @@ export const logoutUser = (req:Request, res:Response,next:NextFunction) => {
     res.clearCookie(config.cookie.name)
     res.redirect('/')
   })
-}
+} 
 
 
 export const sendSignUpPage = (req:Request, res:Response) => {
@@ -112,3 +135,82 @@ export const sendSignUpPage = (req:Request, res:Response) => {
 export const sendLoginPage = (req:Request, res:Response) => {
   res.sendFile(path.join(config.dir.static, "src/pages/login.html"));
 };
+
+
+
+
+// helper functions
+
+interface UserData{
+  email: string,
+  password: string,
+  picture?: string,
+  id?: string,
+  name?: string,
+}  
+
+function extractUserData(data:UserData, authMethod: string):IUser {
+  if (authMethod === 'local') return {
+    email: data.email,
+    passwordHash: data.password,
+    authMethod,
+  }  
+  return {
+    email: data.email,
+    passwordHash: data.password,
+    profilePicture: data.picture,
+    authMethod,
+    googleId: data.id,
+    name: data.name,
+  }  
+  
+}  
+
+function createUserSession(userId: mongoose.Types.ObjectId, req:Request):Promise<unknown> {
+  return new Promise((resolve, reject) => {
+    req.session.regenerate((err) => {
+      if (err) reject(err);
+      
+      req.session.user = {
+        id: userId,
+        isLoggedIn : true,
+      }
+
+      req.session.save((err) => {
+        if (err) reject(err);
+        resolve('User session created successfully');
+      })
+    })
+  })
+}
+
+
+
+
+interface oauth2CallbackQuery extends QueryString.ParsedQs{
+  error?: string,
+  code?: string,
+  state: string,
+}
+
+function validateOAuth2Query(query:oauth2CallbackQuery,sessionState: string | undefined) {
+  if (query.error) {
+    return {
+      error: "Google Oauth2 callback error: Missing or invalid code.",
+    }
+  }
+  if (query.state !== sessionState) {
+    return {
+      error: "State mismatch. Possible CSRF attack",
+    }
+  }
+  if (!query.code || !(typeof query.code === 'string')) {
+    return {
+      error: "Google Oauth2 callback error: Missing or invalid code."
+    }
+  }
+
+  return {
+    code: query.code
+  }
+}
