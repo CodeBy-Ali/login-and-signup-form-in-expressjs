@@ -1,11 +1,11 @@
 /** @type {import("express").RequestHandler} */
 import path from "path";
 import config from "../config/config.js";
-import User, { IUser } from "../models/userModel.ts";
-import bcrypt from "bcrypt";
+import User, { IUser } from "../models/userModel.js";
 import { NextFunction, Request, Response } from "express";
 import crypto from 'crypto';
-import { oauth2Client } from "../server.ts";
+import bcrypt from "bcrypt";
+import { oauth2Client } from "../server.js";
 import { google } from "googleapis";
 import mongoose from "mongoose";
 import QueryString from "qs";

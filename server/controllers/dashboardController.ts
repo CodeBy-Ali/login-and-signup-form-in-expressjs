@@ -1,5 +1,5 @@
 import { NextFunction,Request,Response } from "express";
-import User from "../models/userModel.ts";
+import User from "../models/userModel.js";
 export const renderDashboardView = async (req:Request, res:Response, next:NextFunction) => {
   try {
     const userId = req.session.user?.id;

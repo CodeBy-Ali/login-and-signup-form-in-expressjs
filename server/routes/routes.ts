@@ -1,9 +1,9 @@
 import express from "express";
 import { Router } from "express";
-import { sendHomePage } from "../controllers/homeController.ts";
-import validateAuthInput from "../middlewares/validateAuthInput.ts";
-import { renderDashboardView } from "../controllers/dashboardController.ts";
-import { isAuthenticated, redirectIfAuthorized } from "../middlewares/authenticate.ts";
+import { sendHomePage } from "../controllers/homeController.js";
+import validateAuthInput from "../middlewares/validateAuthInput.js";
+import { renderDashboardView } from "../controllers/dashboardController.js";
+import { isAuthenticated, redirectIfAuthorized } from "../middlewares/authenticate.js";
 import {
   sendLoginPage,
   sendSignUpPage,
@@ -12,7 +12,7 @@ import {
   handleGoogleAuth,
   logoutUser,
   handleGoogleAuthCallback
-} from "../controllers/authController.ts";
+} from "../controllers/authController.js";
 
 
 const router = Router();
