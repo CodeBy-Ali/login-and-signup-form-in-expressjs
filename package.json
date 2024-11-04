@@ -1,6 +1,7 @@
 {
   "scripts": {
     "install": "npm install --prefix client --production=false && npm install --prefix server --production=false",
+    "dev": "cd server && npm run dev & cd.. & cd client && npm run dev",
     "build:client": "cd client && npm run build",
     "build:server": "cd server && npm run build",
     "build": "npm run install && npm run build:client && npm run build:server",
