@@ -28,6 +28,6 @@ export default defineConfig({
         protocolImports: true,
       }),
     ],
-    outDir: "public",
+    outDir: "dist",
   },
 });

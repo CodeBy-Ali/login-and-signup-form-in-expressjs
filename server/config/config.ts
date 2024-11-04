@@ -39,6 +39,8 @@ interface Config {
   env: Env;
 }
 
+
+console.log(ENV);
 const config: Config = {
   port: Number(process.env.PORT) || 3000,
   host: process.env.HOST || `127.0.0.1`,
@@ -47,7 +49,7 @@ const config: Config = {
     static:
       path.resolve(
         __dirname,
-        ENV === "production" ? "../../../client/public" : "../../client/public"
+        ENV === "production" ? "../../../client/dist" : "../../client/dist"
       ) + sep,
     views:
       path.resolve(
