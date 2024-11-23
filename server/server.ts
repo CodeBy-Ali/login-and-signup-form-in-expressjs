@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import MongoStore from "connect-mongo";
 import { google } from "googleapis";
 import errorHandler from "./middlewares/errorHandler.js";
+import setApiTestRequestInterval from "./config/ApiTestRequest.js";
 const { port, host, database, dir, sessionSecret, cookie } = config;
 
 // set up oauth client
@@ -98,6 +99,7 @@ mongoose
     app.listen(port, host, () => {
       console.log(`Server listening at http://${host}:${port}`);
     });
+    setApiTestRequestInterval();
   })
   .catch((err) => {
     console.log(err);
