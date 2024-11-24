@@ -5,7 +5,7 @@ import path, { sep } from "path";
 
 //TODO create separate configs for each node environment
 type Env = "testing" | "development" | "production";
-const ENV: Env = (process.env.NODE_ENV as Env|undefined) || "development";
+const ENV: Env = process.argv[2] as Env|| (process.env.NODE_ENV as Env|undefined) || "development";
 const __dirname = import.meta.dirname;
 const envPath = path.resolve(
   __dirname,
@@ -37,6 +37,7 @@ interface Config {
     maxAge: number;
   };
   env: Env;
+  apiTestSecret: string,
 }
 const config: Config = {
   port: Number(process.env.PORT) || 3000,
@@ -73,6 +74,8 @@ const config: Config = {
     maxAge: 5 * 60 * 1000, // 5 minutes
   },
   env: (process.env.NODE_ENV as Env) || "development",
+  apiTestSecret: process.env.API_TEST_CODE || "mySecret121"
 };
 
 export default config;
+

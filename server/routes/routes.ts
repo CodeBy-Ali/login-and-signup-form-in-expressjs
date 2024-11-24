@@ -13,6 +13,7 @@ import {
     logoutUser,
     handleGoogleAuthCallback
 } from "../controllers/authController.js";
+import testRequestHandler from "../controllers/testRequestController.js";
 
 
 const router = Router();
@@ -38,4 +39,9 @@ router.get("/dashboard", isAuthenticated, renderDashboardView);
 
 // logout
 router.post("/logout", logoutUser);
+
+// test
+router.get("/test", testRequestHandler);
+
+
 export default router;

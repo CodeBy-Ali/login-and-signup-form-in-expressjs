@@ -9,7 +9,6 @@ import { v4 as uuidv4 } from "uuid";
 import MongoStore from "connect-mongo";
 import { google } from "googleapis";
 import errorHandler from "./middlewares/errorHandler.js";
-import setApiTestRequestInterval from "./config/ApiTestRequest.js";
 const { port, host, database, dir, sessionSecret, cookie } = config;
 
 // set up oauth client
@@ -60,16 +59,18 @@ app.disable("x-powered-by");
 // compress http res
 app.use(compression());
 
+// log request
+app.use("/", (req, res, next) => {
+  console.log(`${req.method}  ${req.originalUrl}`);
+  next();
+})
+
 // parse req body
 app.use(express.json());
 
 // server static assets
 app.use(express.static(dir.static));
 
-// logRequest
-if (config.env !== "production") {
-  app.use(requestLogger);
-}
 
 // handles routes
 app.use("/", router);
@@ -95,11 +96,11 @@ mongoose
     }
   )
   .then(() => {
+    console.log(`[------------- ENV: ${config.env} -------------]`);
     console.log("Connected to Database");
     app.listen(port, host, () => {
       console.log(`Server listening at http://${host}:${port}`);
     });
-    setApiTestRequestInterval();
   })
   .catch((err) => {
     console.log(err);
