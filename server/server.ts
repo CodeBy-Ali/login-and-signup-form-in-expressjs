@@ -59,11 +59,6 @@ app.disable("x-powered-by");
 // compress http res
 app.use(compression());
 
-// log request
-app.use("/", (req, res, next) => {
-  console.log(`${req.method}  ${req.originalUrl}`);
-  next();
-})
 
 // parse req body
 app.use(express.json());
