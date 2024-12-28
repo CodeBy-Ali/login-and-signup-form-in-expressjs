@@ -2,7 +2,7 @@
 
 Signup/login form with google OAuth 2.0 and facebook login.
 
-## [Live Preview](https://login-and-signup-form-in-expressjs.onrender.com/)
+## [Live Preview](https://signup-form-production.up.railway.app/)
 
 ![Signup Form Project demo picture](client/public/assets/appDemoImage.png)
 
