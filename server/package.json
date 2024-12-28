@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "copy-views": "copyfiles -u 1 src/views/*.ejs src/views/**/* dist",
-    "start": "node --env-file=.env dist/server.js production",
+    "start": "node  dist/server.js production",
     "build": "tsc && npm run copy-views"
   },
   "keywords": [],
