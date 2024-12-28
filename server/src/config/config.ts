@@ -1,10 +1,15 @@
 import path from "path";
-import { join } from "path";
 import dotenv from "dotenv";
+import { fileURLToPath } from "url";
 
 type Env = "testing" | "development" | "production";
-const __dirname = import.meta.dirname;
-dotenv.config({path: join(__dirname,"..","..",".env")});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
+// import .env file
+const envPath = path.join(__dirname,'..','..','.env');
+dotenv.config({ path: envPath });
 
 interface Config {
   port: number;
