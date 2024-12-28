@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import MongoStore from "connect-mongo";
 import { google } from "googleapis";
 import errorHandler from "./middlewares/errorHandler.js";
+
 const { port, host, database, dir, sessionSecret, cookie } = config;
 
 // set up oauth client
@@ -59,13 +60,11 @@ app.disable("x-powered-by");
 // compress http res
 app.use(compression());
 
-
 // parse req body
 app.use(express.json());
 
 // server static assets
 app.use(express.static(dir.static));
-
 
 // handles routes
 app.use("/", router);
@@ -85,11 +84,9 @@ app.use(errorHandler);
 
 // connect to database
 mongoose
-  .connect(database,
-    {
-      dbName: "express-singUp-form"
-    }
-  )
+  .connect(database, {
+    dbName: "express-singUp-form",
+  })
   .then(() => {
     console.log(`[------------- ENV: ${config.env} -------------]`);
     console.log("Connected to Database");
@@ -101,3 +98,5 @@ mongoose
     console.log(err);
     process.exit(1);
   });
+
+

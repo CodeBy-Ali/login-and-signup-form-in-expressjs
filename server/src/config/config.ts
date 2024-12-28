@@ -1,17 +1,10 @@
+import path from "path";
+import { join } from "path";
 import dotenv from "dotenv";
-import path, { sep } from "path";
 
-
-
-//TODO create separate configs for each node environment
 type Env = "testing" | "development" | "production";
-const ENV: Env = process.argv[2] as Env|| (process.env.NODE_ENV as Env|undefined) || "development";
 const __dirname = import.meta.dirname;
-const envPath = path.resolve(
-  __dirname,
-  ENV === "production" ? "../../.env" : "../.env"
-);
-dotenv.config({ path: envPath });
+dotenv.config({path: join(__dirname,"..","..",".env")});
 
 interface Config {
   port: number;
@@ -44,16 +37,8 @@ const config: Config = {
   host: process.env.HOST || `127.0.0.1`,
   dir: {
     root: __dirname,
-    static:
-      path.resolve(
-        __dirname,
-        ENV === "production" ? "../../../client/dist" : "../../client/dist"
-      ) + sep,
-    views:
-      path.resolve(
-        __dirname,
-        ENV === "production" ? "../../views" : "../views"
-      ) + sep,
+    static: path.join(__dirname, '../../../client/dist'),
+    views: path.join(__dirname, '..', 'views'),
   },
   Client: {
     id: process.env.CLIENT_ID as string,

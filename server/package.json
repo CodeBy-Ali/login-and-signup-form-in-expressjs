@@ -4,10 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch server.ts",
-    "start": "node dist/server.js production",
-    "build": "tsc"
+    "dev": "tsx watch src/server.ts",
+    "copy-views": "copyfiles -u 1 src/views/*.ejs src/views/**/* dist",
+    "start": "node --env-file=.env dist/server.js production",
+    "build": "tsc && npm run copy-views"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
     "connect-mongo": "^5.1.0",
+    "copyfiles": "^2.4.1",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
@@ -24,6 +25,7 @@
     "express-session": "^1.18.0",
     "googleapis": "^142.0.0",
     "mongoose": "^8.4.3",
+    "typescript": "^5.7.2",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
@@ -32,7 +34,6 @@
     "@types/express": "^4.17.21",
     "@types/express-session": "^1.18.0",
     "@types/node": "^22.4.1",
-    "@types/uuid": "^10.0.0",
-    "typescript": "^5.5.4"
+    "@types/uuid": "^10.0.0"
   }
 }
